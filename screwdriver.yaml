@@ -28,9 +28,9 @@ jobs:
             #- sleep: sleep 60000
             - postecho: |
                 echo {0..9}{0..9} | tr ' ' '\n'
-                sleep 10
+                sleep 5
                 cat $SD_SOURCE_DIR/ascii-art.txt
-                sleep 10
+                sleep 5
                 echo {a..z}{a..z} | tr ' ' '\n'
                 
             #- publish: npx semantic-release
