@@ -1,7 +1,7 @@
 shared:
-    image: node:8
+    image: alpine
     environment:
-        USER_SHELL_BIN: bash
+        USER_SHELL_BIN: sh
 
 cache:
     event:
