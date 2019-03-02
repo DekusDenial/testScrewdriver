@@ -1,7 +1,7 @@
 shared:
     image: node:8
     annotations:
-        screwdriver.cd/restrictPR: branch
+        screwdriver.cd/restrictPR: all
     environment:
         USER_SHELL_BIN: bash
 
