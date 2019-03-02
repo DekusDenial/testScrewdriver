@@ -22,10 +22,6 @@ jobs:
         steps:
             - get: |
                 echo $(meta get foo)
-    test:
-        requires: [~pr, ~commit]
-        steps:
-            - test: env
     main:
         requires: [~pr, ~commit]
         steps:
