@@ -1,9 +1,10 @@
 shared:
     image: node:8
-    annotations:
-        screwdriver.cd/restrictPR: all
     environment:
         USER_SHELL_BIN: bash
+
+annotations:
+    screwdriver.cd/restrictPR: all
 
 cache:
     event:
