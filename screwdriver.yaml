@@ -4,10 +4,6 @@ shared:
         screwdriver.cd/restrictPR: branch
     environment:
         USER_SHELL_BIN: bash
-
-annotations:
-    screwdriver.cd/restrictPR: all
-
 cache:
     event:
         - /sd/meta
