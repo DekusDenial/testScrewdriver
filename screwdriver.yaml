@@ -5,8 +5,8 @@ shared:
     environment:
         USER_SHELL_BIN: bash
 
-annotations:
-    screwdriver.cd/restrictPR: all
+# annotations:
+#     screwdriver.cd/restrictPR: all
 
 cache:
     event:
