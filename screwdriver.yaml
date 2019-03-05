@@ -27,7 +27,7 @@ jobs:
                 echo $(meta get foo)
     main:
         requires: [~pr, ~commit]
-#         sourcePaths: ["ascii-art.txt"]
+        sourcePaths: ["ascii-art.txt"]
         steps:
             #- set: meta set build_version_1 1234567
             #- get: meta get build_version_1
