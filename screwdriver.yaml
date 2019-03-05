@@ -21,9 +21,18 @@ jobs:
         steps:
             - get: |
                 echo $(meta get foo)
+    ascii:	
+        requires: [~pr]
+        sourcePaths: ["ascii-art.txt"]
+        steps:	
+            - env: env
+    readme:	
+        requires: [~pr]
+        sourcePaths: ["README.md"]
+        steps:	
+            - env: env
     main:
         requires: [~pr, ~commit]
-#         sourcePaths: ["ascii-art.txt"]
         steps:
             #- set: meta set build_version_1 1234567
             #- get: meta get build_version_1
