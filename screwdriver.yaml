@@ -47,7 +47,7 @@ jobs:
         requires: [~pr]
         sourcePaths: ["screwdriver.yaml"]
         steps:	
-            - env: env
+            - env: env && echo 1
     main:
         requires: [~pr, ~commit]
         steps:
