@@ -21,10 +21,33 @@ jobs:
         steps:
             - get: |
                 echo $(meta get foo)
-    test:
-        requires: [~pr, ~commit]
-        steps:
-            - test: env
+     ascii:	
+        requires: [~pr, ~commit]	        requires: [~pr]
+        steps:	        sourcePaths: ["ascii-art.txt"]
+            - test: env	        steps:	
+            - env: env
+    readme:	
+        requires: [~pr]
+        sourcePaths: ["README.md"]
+        steps:	
+            - env: env
+    always1:	
+        requires: [~pr]
+        steps:	
+            - env: env
+    always2:	
+        requires: [~pr]
+        steps:	
+            - env: env
+    always3:	
+        requires: [~pr]
+        steps:	
+            - env: env
+    yaml:
+        requires: [~pr]
+        sourcePaths: ["screwdriver.yaml"]
+        steps:	
+            - env: env
     main:
         requires: [~pr, ~commit]
         steps:
