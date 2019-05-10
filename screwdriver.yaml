@@ -30,10 +30,11 @@ jobs:
             #- get: meta get build_version_1
             #- sleep: sleep 60000
             - postecho: |
-                echo {0..9}{0..9} | tr ' ' '\n'
-                sleep 7
                 cat $SD_SOURCE_DIR/ascii-art.txt
                 sleep 7
+                echo {0..2}{0..2} | tr ' ' '\n'
+                sleep 1
+                echo {3..4}{3..4} | tr ' ' '\n'
                 exit 1
                 echo {a..z}{a..z} | tr ' ' '\n'
             - post: env
