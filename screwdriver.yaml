@@ -4,7 +4,7 @@ shared:
         USER_SHELL_BIN: bash
 annotations:
     screwdriver.cd/restrictPR: all
-    screwdriver.cd/chainPR: false
+    screwdriver.cd/chainPR: true
 cache:
     event:
         - /sd/meta
