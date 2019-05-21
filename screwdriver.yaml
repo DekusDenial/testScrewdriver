@@ -3,8 +3,8 @@ shared:
     environment:
         USER_SHELL_BIN: bash
 annotations:
-    screwdriver.cd/restrictPR: none
-    screwdriver.cd/chainPR: true
+    screwdriver.cd/restrictPR: all
+    screwdriver.cd/chainPR: false
 cache:
     event:
         - /sd/meta
