@@ -22,6 +22,13 @@ jobs:
         steps:
             - get: |
                 echo $(meta get foo)
+    sd-test:
+        requires: [~pr, ~commit]
+        steps:
+            - echo1: echo first
+            - echo2: echo second
+            - sleep: sleep 60
+            - echo3: echo third
     test:
         requires: [~pr, ~commit]
         steps:
