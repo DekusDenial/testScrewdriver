@@ -3,7 +3,7 @@ shared:
     environment:
         USER_SHELL_BIN: bash
 annotations:
-    screwdriver.cd/restrictPR: all
+    screwdriver.cd/restrictPR: none
     screwdriver.cd/chainPR: true
 cache:
     event:
