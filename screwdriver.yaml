@@ -62,3 +62,7 @@ jobs:
             #- publish: npx semantic-release
             #- install: npm install screwdriver-template-main
             #- tag: ./node_modules/.bin/template-tag --name tifftemplate --version 1.0.4 --tag meow
+    combo-triggered-job:
+        steps:
+            - echo: echo 'this job is executed by a tag/release push event.'
+        requires: [~release, ~tag]
