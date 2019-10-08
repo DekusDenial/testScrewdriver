@@ -28,7 +28,7 @@ jobs:
             - test: |
                 echo first
                 echo second
-                sleep 60
+                git diff 431d3e61...origin/master
                 echo third
     test:
         requires: [~pr, ~commit]
