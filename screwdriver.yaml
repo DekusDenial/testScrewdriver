@@ -14,6 +14,7 @@ cache:
 
 jobs:
     set-meta-job:
+        requires: [~pr, ~commit]
         steps:
             - set: |
                 meta set foo[2].bar[1] baz
