@@ -20,6 +20,7 @@ jobs:
             - set: |
                 meta set foo[2].bar[1] baz
     get-meta-job:
+        requires: [set-meta-job]
         steps:
             - get: |
                 echo $(meta get foo)
