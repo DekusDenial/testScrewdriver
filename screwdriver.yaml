@@ -2,9 +2,6 @@ shared:
     image: node:8
     environment:
         USER_SHELL_BIN: bash
-annotations:
-#     screwdriver.cd/restrictPR: all
-    screwdriver.cd/chainPR: true
 cache:
     event:
         - /sd/meta
@@ -12,8 +9,15 @@ cache:
         - /sd/meta
     job:
         set-meta-job: [/sd/meta]
+annotations:
+    screwdriver.cd/chainPR: true
+#     screwdriver.cd/restrictPR: all
 
 jobs:
+    prjob_test:
+        requires: [~pr:prjob]
+        steps:
+            - env: env
     set-meta-job:
         requires: [~pr, ~commit]
         steps:
@@ -31,10 +35,6 @@ jobs:
                 echo second
                 git diff 431d3e61...origin/master
                 echo third
-    prjob:
-        requires: [~pr:prjob]
-        steps:
-            - env: env
     test:
         requires: [~pr, ~commit]
         steps:
