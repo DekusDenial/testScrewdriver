@@ -31,7 +31,7 @@ jobs:
                 echo second
                 git diff 431d3e61...origin/master
                 echo third
-    prjob:
+    prjob2:
         requires: [~pr:prjob]
         steps:
             - env: env
