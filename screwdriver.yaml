@@ -34,7 +34,7 @@ jobs:
     prjob2:
         requires: [~pr:prjob]
         steps:
-            - env: env
+            - env: echo $(env)
     test:
         requires: [~pr, ~commit]
         steps:
