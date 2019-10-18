@@ -16,6 +16,8 @@ annotations:
 jobs:
     test_tear_down:
         requires: [~commit]
+        annotations:
+            screwdriver.cd/timeout: 1
         steps:
             - env: env
             - new_env_var: |
@@ -23,8 +25,8 @@ jobs:
                 export B=2
                 export C=3
                 env
-            - fail: |
-                false
+            - timeout: |
+                sleep 70
             - teardown-test: |
                 echo $A $B $C
                 env
