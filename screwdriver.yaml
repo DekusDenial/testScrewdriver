@@ -23,7 +23,8 @@ jobs:
                 export B=2
                 export C=3
                 env
-            - fail: false
+            - fail: |
+                false
             - teardown-test: |
                 echo $A $B $C
                 env
