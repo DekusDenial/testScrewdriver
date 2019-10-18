@@ -14,6 +14,18 @@ annotations:
 #     screwdriver.cd/restrictPR: all
 
 jobs:
+    test_tear_down:
+        requires: [~commit]
+        steps:
+            - env: env
+            - new_env_var: |
+                export A=1
+                export B=2
+                export C=3
+                env
+            - teardown-test: |
+                echo $A $B $C
+                env
     prjob_test:
         requires: [~pr:prjob]
         steps:
