@@ -23,9 +23,6 @@ jobs:
 #             - ls: ls
     test_param:
         requires: [~commit]
-        parameters:
-            region: us-west-1
-            az: b
         steps:
             - param_values1: meta get parameters
             - param_values2: meta get parameters.region
