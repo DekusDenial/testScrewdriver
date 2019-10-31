@@ -13,11 +13,24 @@ annotations:
     screwdriver.cd/chainPR: true
 #     screwdriver.cd/restrictPR: all
 
+parameters:
+    region: us-west-1
+    az: a
 jobs:
-    noop:
-        image: rwgrim/docker-noop
+#     noop:
+#         image: rwgrim/docker-noop
+#         steps:
+#             - ls: ls
+    test_param:
+        requires: [~commit]
+        parameters:
+            region: us-west-1
+            az: b
         steps:
-            - ls: ls
+            - param_values1: meta get parameters
+            - param_values2: meta get parameters.region
+            - param_values3: meta get parameters.az
+            - meta: meta get -j json
     test_tear_down:
         requires: [~commit]
         annotations:
