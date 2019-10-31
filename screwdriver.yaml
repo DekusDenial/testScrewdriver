@@ -14,8 +14,8 @@ annotations:
 #     screwdriver.cd/restrictPR: all
 
 parameters:
-    region: us-west-1
-    az: a
+    region: "us-west-2"
+    az: "b"
 jobs:
 #     noop:
 #         image: rwgrim/docker-noop
