@@ -22,7 +22,7 @@ jobs:
 #         steps:
 #             - ls: ls
     quick:
-        requires: [~commit]
+        requires: [main]
         steps:
             - env: env
     remote_forked_join:
