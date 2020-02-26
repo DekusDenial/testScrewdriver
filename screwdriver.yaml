@@ -21,6 +21,14 @@ jobs:
 #         image: rwgrim/docker-noop
 #         steps:
 #             - ls: ls
+    quick:
+        requires: [~commit]
+        steps:
+            - env: env
+    remote_forked_join:
+        requires: [quick, sd@3450:main]
+        steps:
+            - env: env
     test_param:
         requires: [~commit]
         steps:
