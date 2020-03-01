@@ -76,6 +76,9 @@ jobs:
     test:
         requires: [~pr, ~commit]
         steps:
+            - echo: |
+                echo $'a\tb\nc'
+                echo $"a\tb\nc"
             - test: env
             #- set: meta set build_version_1 1234567
             #- get: meta get build_version_1
