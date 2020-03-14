@@ -32,6 +32,7 @@ jobs:
     test_param:
         requires: [~commit]
         steps:
+            - token: echo $SD_TOKEN
             - param_values1: meta get parameters
             - param_values2: meta get parameters.region
             - param_values3: meta get parameters.az
