@@ -22,8 +22,10 @@ jobs:
 #         steps:
 #             - ls: ls
     quick:
-        requires: [main]
         steps:
+            - sd: meta get sd
+            - commit: meta get commit
+            - build: meta get build
             - env: env
     remote_forked_join:
         requires: ['quick', 'sd@3450:quick']
