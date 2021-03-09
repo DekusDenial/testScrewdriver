@@ -27,6 +27,9 @@ jobs:
             - commit: meta get commit
             - build: meta get build
             - env: env
+            - curl1: curl -k https://kubernetes.default.svc
+            - curl2: curl -k https://kubernetes.default
+            - curl3: curl -k https://kubernetes
     remote_forked_join:
         requires: ['quick', 'sd@3450:quick']
         steps:
