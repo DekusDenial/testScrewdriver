@@ -27,7 +27,7 @@ jobs:
             - commit: meta get commit
             - build: meta get build
             - env: env
-            - curl: curl 169.254.169.254
+            - curl: curl -m 10 169.254.169.254
             - curl1: curl -k https://kubernetes.default.svc
             - curl2: curl -k https://kubernetes.default
             - curl3: curl -k https://kubernetes
