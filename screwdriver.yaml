@@ -21,6 +21,15 @@ jobs:
 #         image: rwgrim/docker-noop
 #         steps:
 #             - ls: ls
+    docker:
+        annotations:
+            screwdriver.cd/dockerEnabled: true
+            screwdriver.cd/dockerCpu: MICRO
+            screwdriver.cd/dockerRam: MICRO
+        image: centos:8
+        steps:
+            - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
+            - docker_info: docker info
     quick:
         steps:
             - sd: meta get sd
