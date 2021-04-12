@@ -31,7 +31,9 @@ jobs:
             - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
             - docker_info: docker info
             - sleep: sleep 3600
-            - docker_run: docker run --rm -v $(pwd):/wd -w /wd --entrypoint bash vespaengine/vespa-pipeline -lc "ls -la /  && mount && ls -la /wd"
+            - docker_run: |
+                git clone https://github.com/vespa-engine/documentation $SD_DIND_SHARE_PATH/documentation
+                docker run --rm -v $SD_DIND_SHARE_PATH/documentation:/wd -w /wd --entrypoint bash vespaengine/vespa-pipeline -lc "ls -la / && mount && ls -la /wd"
     quick:
         steps:
             - sd: meta get sd
