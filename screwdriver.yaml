@@ -30,6 +30,7 @@ jobs:
         steps:
             - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
             - docker_info: docker info
+            - sleep: sleep 3600
             - docker_run: docker run --rm -v $(pwd):/wd -w /wd --entrypoint bash vespaengine/vespa-pipeline -lc "ls -la /  && mount && ls -la /wd"
     quick:
         steps:
