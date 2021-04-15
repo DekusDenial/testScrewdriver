@@ -21,6 +21,21 @@ jobs:
 #         image: rwgrim/docker-noop
 #         steps:
 #             - ls: ls
+    abort:
+        image: node:12
+        steps:
+          - env: export FACTORY_BUILD_STATUS=success
+          - sleep: |
+              export ABORT_BUILD_STATUS=aborted
+              while true; do sleep 1; echo "sleep"; done          
+          - teardown-first: |
+              export ABORT_BUILD_STATUS_TEARDOWN=aborted-teardown
+              sleep 60
+              export
+          - teardown-env: |
+              echo $FACTORY_BUILD_STATUS
+              echo $ABORT_BUILD_STATUS
+              echo $ABORT_BUILD_STATUS_TEARDOWN      
     docker:
         annotations:
             screwdriver.cd/dockerEnabled: true
