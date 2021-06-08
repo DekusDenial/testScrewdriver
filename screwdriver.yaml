@@ -48,7 +48,6 @@ jobs:
                 mkdir -p ~/.docker/cli-plugins
                 curl -L -o ~/.docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64"
                 chmod a+x ~/.docker/cli-plugins/docker-buildx
-                sleep 3600
             - docker_info: |
                 docker info
                 docker version
