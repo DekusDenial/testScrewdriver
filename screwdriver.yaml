@@ -46,6 +46,7 @@ jobs:
             - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
             - docker_info: |
                 docker info
+                docker version
                 docker buildx ls
             - docker_run: |
                 docker build -t test .
