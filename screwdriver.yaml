@@ -46,7 +46,7 @@ jobs:
             - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
             - docker_buildx_install: |
                 mkdir -p ~/.docker/cli-plugins
-                wget "https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64" -O ~/.docker/cli-plugins/docker-buildx
+                curl -o ~/.docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64"
                 chmod a+x ~/.docker/cli-plugins/docker-buildx
             - docker_info: |
                 docker info
