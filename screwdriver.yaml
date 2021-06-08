@@ -44,7 +44,9 @@ jobs:
         image: centos:8
         steps:
             - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
-            - docker_info: docker info
+            - docker_info: |
+                docker info
+                docker buildx ls
             - docker_run: |
                 docker build -t test .
     quick:
