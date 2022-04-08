@@ -37,47 +37,18 @@ jobs:
               echo $ABORT_BUILD_STATUS
               echo $ABORT_BUILD_STATUS_TEARDOWN      
     docker:
-        annotations:
-            screwdriver.cd/dockerEnabled: true
-            screwdriver.cd/dockerCpu: MICRO
-            screwdriver.cd/dockerRam: MICRO
-        image: alpine:latest
+        template: sd/dindx@latest
+        environment:
+            DOCKER_REPO: dekusdenial/test
+            DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
         secrets:
             - USER_NAME
             - USER_PASSWORD
         steps:
-            - docker_install: |
-                apk add --update docker openrc qemu qemu-openrc curl bind-tools coreutils
-                apk add --update skopeo --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community/
-                mkdir -p /usr/local/lib/docker/cli-plugins/
-                curl -s -L https://github.com/docker/buildx/releases/download/v0.8.0/buildx-v0.8.0.linux-amd64 -o /usr/local/lib/docker/cli-plugins/docker-buildx
-                chmod a+x /usr/local/lib/docker/cli-plugins/docker-buildx
-                # dockerd &
-                # sleep 10
-            - docker_info: |
-                ls -al /certs/client
-                docker info
-                docker version
-                docker login -u "$USER_NAME" -p "$USER_PASSWORD"
-                docker buildx version
-                docker buildx install
-                unset DOCKER_HOST
-                docker context create mycontext --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem"
-                docker context use mycontext
-                # docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure" --use
-                docker buildx create --name mybuilder --driver docker-container --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6 --use
-                docker buildx inspect --bootstrap
-            - docker_ls: |
-                docker context list
-                docker buildx ls
-            - docker_build_push: |
-                docker buildx build -q --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6 -t dekusdenial/test:latest .
-                docker buildx build -q --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6 -t dekusdenial/test:current .
-            - skopeo_copy: |
-                skopeo copy --multi-arch all docker://dekusdenial/test:latest docker://dekusdenial/test:stable
-                docker manifest inspect dekusdenial/test:latest
-                docker manifest inspect dekusdenial/test:stable
-            - docker_run: |
+            - postsetup: |
+                DOCKER_REGISTRY_USER=$USER_NAME
+                DOCKER_REGISTRY_TOKEN=$USER_PASSWORD
+            - postverify: |
                 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
                 docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
                 docker run -it --rm --platform linux/amd64 --entrypoint sh dekusdenial/test -c 'uname -m'
