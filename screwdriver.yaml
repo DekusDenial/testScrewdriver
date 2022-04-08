@@ -42,6 +42,9 @@ jobs:
             screwdriver.cd/dockerCpu: MICRO
             screwdriver.cd/dockerRam: MICRO
         image: alpine:latest
+        secrets:
+            - USER_NAME
+            - USER_PASSWORD
         steps:
             - docker_install: |
                 apk add --update docker openrc qemu qemu-openrc curl bind-tools coreutils
@@ -55,16 +58,18 @@ jobs:
                 ls -al /certs/client
                 docker info
                 docker version
+                docker login -u "$USER_NAME" -p "$USER_PASSWORD"
                 docker buildx version
                 docker buildx install
                 unset DOCKER_HOST
                 docker context create mybuilder --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem"
                 docker context use mybuilder
+                # docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
                 # docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure --oci-worker-no-process-sandbox" --use
                 docker buildx ls
                 docker buildx inspect --bootstrap
             - docker_run: |
-                docker buildx build --load --platform linux/amd64,linux/arm64 -t test .
+                docker buildx build --push --platform linux/amd64,linux/arm64 -t dekusdenial/test .
                 docker images
     quick:
         steps:
