@@ -69,8 +69,9 @@ jobs:
                 docker buildx create --name mybuilder --driver docker-container --use
                 docker buildx ls
                 docker buildx inspect --bootstrap
-            - docker_run: |
-                docker buildx build --push --platform linux/amd64,linux/arm64 -t dekusdenial/test:latest .
+            - docker_build_push: |
+                docker buildx build --load --platform linux/amd64,linux/arm64 -t dekusdenial/test:latest .
+            - docker_tag_push: |
                 docker tag dekusdenial/test:latest dekusdenial/test:stable
                 docker push dekusdenial/test:stable
                 docker manifest inspect dekusdenial/test:latest
