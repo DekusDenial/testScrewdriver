@@ -50,7 +50,8 @@ jobs:
                 DOCKER_REGISTRY_USER=$USER_NAME
                 DOCKER_REGISTRY_TOKEN=$USER_PASSWORD
                 echo "stable" > VERSION
-                docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+                # docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+                docker run --privileged --rm tonistiigi/binfmt --install all
             - postverify: |
                 docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
                 docker run -it --rm --platform linux/amd64 --entrypoint sh dekusdenial/test -c 'uname -m'
