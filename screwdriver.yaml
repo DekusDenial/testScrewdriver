@@ -44,7 +44,7 @@ jobs:
         image: alpine:latest
         steps:
             - docker_install: |
-                apk add --update docker openrc qemu qemu-openrc
+                apk add --update docker openrc qemu qemu-openrc curl bind-tools coreutils
                 apk add --update skopeo --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community/
                 mkdir -p /usr/local/lib/docker/cli-plugins/
                 curl -s -L https://github.com/docker/buildx/releases/download/v0.8.0/buildx-v0.8.0.linux-amd64 -o /usr/local/lib/docker/cli-plugins/docker-buildx
