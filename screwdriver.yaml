@@ -64,7 +64,6 @@ jobs:
                 unset DOCKER_HOST
                 docker context create mycontext --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem"
                 docker context use mycontext
-                # docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
                 # docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure" --use
                 docker buildx create --name mybuilder --driver docker-container --use
                 docker buildx inspect --bootstrap
@@ -77,6 +76,10 @@ jobs:
                 skopeo copy --multi-arch all docker://dekusdenial/test:latest docker://dekusdenial/test:stable
                 docker manifest inspect dekusdenial/test:latest
                 docker manifest inspect dekusdenial/test:stable
+            - docker_run: |
+                docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+                docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
+                docker run -it --rm --entrypoint sh dekusdenial/test -c 'uname -m'
     quick:
         steps:
             - sd: meta get sd
