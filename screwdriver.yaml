@@ -70,10 +70,9 @@ jobs:
                 docker buildx ls
                 docker buildx inspect --bootstrap
             - docker_build_push: |
-                docker buildx build --load --platform linux/amd64,linux/arm64 -t dekusdenial/test:latest .
-            - docker_tag_push: |
-                docker tag dekusdenial/test:latest dekusdenial/test:stable
-                docker push dekusdenial/test:stable
+                docker buildx build --push --platform linux/amd64,linux/arm64 -t dekusdenial/test:latest .
+            - skopeo_copy: |
+                skopeo copy --multi-arch all docker://dekusdenial/test:latest docker://dekusdenial/test:stable
                 docker manifest inspect dekusdenial/test:latest
                 docker manifest inspect dekusdenial/test:stable
     quick:
