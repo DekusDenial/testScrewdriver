@@ -57,7 +57,7 @@ jobs:
                 docker version
                 docker buildx version
                 docker buildx install
-                docker context create mybuilder --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/client.key"
+                docker context create mybuilder --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem"
                 docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure --oci-worker-no-process-sandbox" --use
                 docker buildx ls
                 docker buildx inspect --bootstrap
