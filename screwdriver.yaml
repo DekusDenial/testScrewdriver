@@ -46,11 +46,16 @@ jobs:
             - docker_install: |
                 apk add --update docker openrc qemu qemu-openrc
                 apk add --update skopeo --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community/
+                mkdir -p /usr/local/lib/docker/cli-plugins/
+                curl -s -L https://github.com/docker/buildx/releases/download/v0.8.0/buildx-v0.8.0.linux-amd64 -o /usr/local/lib/docker/cli-plugins/docker-buildx
+                chmod a+x /usr/local/lib/docker/cli-plugins/docker-buildx
                 dockerd &
                 sleep 10
             - docker_info: |
                 docker info
                 docker version
+                docker buildx version
+                docker buildx install
                 docker buildx ls
             - docker_run: |
                 docker buildx build --platform linux/amd64,linux/arm64 -t test .
