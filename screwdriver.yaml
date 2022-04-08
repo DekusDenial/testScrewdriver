@@ -36,9 +36,14 @@ jobs:
               echo $FACTORY_BUILD_STATUS
               echo $ABORT_BUILD_STATUS
               echo $ABORT_BUILD_STATUS_TEARDOWN      
-    docker:
+    dockerX:
         template: sd/dind@latest
         image: docker:dind
+        annotations:
+            screwdriver.cd/cpu: HIGH
+            screwdriver.cd/ram: LOW
+            screwdriver.cd/dockerCpu: HIGH
+            screwdriver.cd/dockerRam: LOW
         environment:
             DOCKER_REPO: dekusdenial/test
             DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
