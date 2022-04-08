@@ -38,6 +38,7 @@ jobs:
               echo $ABORT_BUILD_STATUS_TEARDOWN      
     docker:
         template: sd/dindx@latest
+        image: docker:dind
         environment:
             DOCKER_REPO: dekusdenial/test
             DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
