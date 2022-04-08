@@ -60,11 +60,11 @@ jobs:
                 unset DOCKER_HOST
                 docker context create mybuilder --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem"
                 docker context use mybuilder
-                docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure --oci-worker-no-process-sandbox" --use
+                # docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure --oci-worker-no-process-sandbox" --use
                 docker buildx ls
                 docker buildx inspect --bootstrap
             - docker_run: |
-                docker buildx build --platform linux/amd64,linux/arm64 -t test .
+                docker buildx build --load --platform linux/amd64,linux/arm64 -t test .
                 docker images
     quick:
         steps:
