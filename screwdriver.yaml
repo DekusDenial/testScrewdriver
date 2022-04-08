@@ -65,12 +65,16 @@ jobs:
                 docker context create mybuilder --docker "host=tcp://localhost:2376,ca=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem"
                 docker context use mybuilder
                 # docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-                docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure" --use
+                # docker buildx create --name mybuilder --driver docker-container --driver-opt "network=host" --buildkitd-flags "--allow-insecure-entitlement security.insecure" --use
+                docker buildx create --name mybuilder --driver docker-container --use
                 docker buildx ls
                 docker buildx inspect --bootstrap
             - docker_run: |
-                docker buildx build --push --platform linux/amd64,linux/arm64 -t dekusdenial/test .
-                docker images
+                docker buildx build --push --platform linux/amd64,linux/arm64 -t dekusdenial/test:latest .
+                docker tag dekusdenial/test:latest dekusdenial/test:stable
+                docker push dekusdenial/test:stable
+                docker manifest inspect dekusdenial/test:latest
+                docker manifest inspect dekusdenial/test:stable
     quick:
         steps:
             - sd: meta get sd
