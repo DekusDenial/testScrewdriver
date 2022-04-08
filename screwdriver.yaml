@@ -41,19 +41,20 @@ jobs:
             screwdriver.cd/dockerEnabled: true
             screwdriver.cd/dockerCpu: MICRO
             screwdriver.cd/dockerRam: MICRO
-        image: centos:8
+        image: alpine:latest
         steps:
-            - docker_install: /opt/sd/bin/hab pkg binlink core/docker docker
-            - docker_buildx_install: |
-                mkdir -p ~/.docker/cli-plugins
-                curl -L -o ~/.docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64"
-                chmod a+x ~/.docker/cli-plugins/docker-buildx
+            - docker_install: |
+                apk add --update docker openrc qemu qemu-openrc
+                apk add --update skopeo --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community/
+                dockerd &
+                sleep 10
             - docker_info: |
                 docker info
                 docker version
                 docker buildx ls
             - docker_run: |
-                docker build -t test .
+                docker buildx build --platform linux/amd64,linux/arm64 -t test .
+                docker images
     quick:
         steps:
             - sd: meta get sd
