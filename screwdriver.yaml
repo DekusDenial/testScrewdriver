@@ -37,7 +37,7 @@ jobs:
               echo $ABORT_BUILD_STATUS
               echo $ABORT_BUILD_STATUS_TEARDOWN      
     docker:
-        template: sd/dindx@latest
+        template: sd/dind@latest
         image: docker:dind
         environment:
             DOCKER_REPO: dekusdenial/test
