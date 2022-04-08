@@ -72,6 +72,7 @@ jobs:
                 docker buildx ls
             - docker_build_push: |
                 docker buildx build --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6 -t dekusdenial/test:latest .
+                docker buildx build --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6 -t dekusdenial/test:current .
             - skopeo_copy: |
                 skopeo copy --multi-arch all docker://dekusdenial/test:latest docker://dekusdenial/test:stable
                 docker manifest inspect dekusdenial/test:latest
