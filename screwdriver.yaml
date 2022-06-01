@@ -36,28 +36,23 @@ jobs:
               echo $FACTORY_BUILD_STATUS
               echo $ABORT_BUILD_STATUS
               echo $ABORT_BUILD_STATUS_TEARDOWN      
-    dockerX:
-        template: sd/dind@latest
-        image: docker:dind
-#         annotations:
-#             screwdriver.cd/cpu: HIGH
-#             screwdriver.cd/ram: LOW
-#             screwdriver.cd/dockerCpu: HIGH
-#             screwdriver.cd/dockerRam: LOW
-        environment:
-            DOCKER_REPO: dekusdenial/test
-            DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
-        secrets:
-            - USER_NAME
-            - USER_PASSWORD
-        steps:
-            - postsetup: |
-                DOCKER_REGISTRY_USER=$USER_NAME
-                DOCKER_REGISTRY_TOKEN=$USER_PASSWORD
-                echo "stable" > VERSION
-            - postverify: |
-                docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
-                docker run -it --rm --platform linux/amd64 --entrypoint sh dekusdenial/test -c 'uname -m'
+#     dockerX:
+#         template: sd/dind@latest
+#         image: docker:dind
+#         environment:
+#             DOCKER_REPO: dekusdenial/test
+#             DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
+#         secrets:
+#             - USER_NAME
+#             - USER_PASSWORD
+#         steps:
+#             - postsetup: |
+#                 DOCKER_REGISTRY_USER=$USER_NAME
+#                 DOCKER_REGISTRY_TOKEN=$USER_PASSWORD
+#                 echo "stable" > VERSION
+#             - postverify: |
+#                 docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
+#                 docker run -it --rm --platform linux/amd64 --entrypoint sh dekusdenial/test -c 'uname -m'
     quick:
         steps:
             - sd: meta get sd
