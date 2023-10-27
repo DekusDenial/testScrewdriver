@@ -17,6 +17,8 @@ parameters:
     region: "us-west-2"
     az: "b"
 jobs:
+    template:
+        template: screwdriver-cd-test/test-trusted-template@1.0.134
 #     noop:
 #         image: rwgrim/docker-noop
 #         steps:
