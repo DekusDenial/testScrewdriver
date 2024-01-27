@@ -1,155 +1,159 @@
 shared:
-    image: node:8
-    environment:
-        USER_SHELL_BIN: bash
+  image: node:20
+  environment:
+    USER_SHELL_BIN: bash
 cache:
-    event:
-        - /sd/meta
-    pipeline:
-        - /sd/meta
-    job:
-        set-meta-job: [/sd/meta]
+  event:
+    - /sd/meta
+  pipeline:
+    - /sd/meta
+  job:
+    set-meta-job: [/sd/meta]
 annotations:
-    screwdriver.cd/chainPR: true
+  screwdriver.cd/chainPR: true
 #     screwdriver.cd/restrictPR: all
 
 parameters:
-    region: "us-west-2"
-    az: "b"
+  region: "us-west-2"
+  az: "b"
 jobs:
-    template:
-        template: screwdriver-cd-test/test-trusted-template@1.0.134
-#     noop:
-#         image: rwgrim/docker-noop
-#         steps:
-#             - ls: ls
-    abort:
-        image: node:12
-        steps:
-          - env: export FACTORY_BUILD_STATUS=success
-          - sleep: |
-              export ABORT_BUILD_STATUS=aborted
-              while true; do sleep 1; echo "sleep"; done          
-          - teardown-first: |
-              export ABORT_BUILD_STATUS_TEARDOWN=aborted-teardown
-              sleep 60
-              export
-          - teardown-env: |
-              echo $FACTORY_BUILD_STATUS
-              echo $ABORT_BUILD_STATUS
-              echo $ABORT_BUILD_STATUS_TEARDOWN      
-#     dockerX:
-#         template: sd/dind@latest
-#         image: docker:dind
-#         environment:
-#             DOCKER_REPO: dekusdenial/test
-#             DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
-#         secrets:
-#             - USER_NAME
-#             - USER_PASSWORD
-#         steps:
-#             - postsetup: |
-#                 DOCKER_REGISTRY_USER=$USER_NAME
-#                 DOCKER_REGISTRY_TOKEN=$USER_PASSWORD
-#                 echo "stable" > VERSION
-#             - postverify: |
-#                 docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
-#                 docker run -it --rm --platform linux/amd64 --entrypoint sh dekusdenial/test -c 'uname -m'
-    quick:
-        steps:
-            - sd: meta get sd
-            - commit: meta get commit
-            - build: meta get build
-            - env: env
-            - curl: curl -m 10 169.254.169.254
-            - curl1: curl -k https://kubernetes.default.svc
-            - curl2: curl -k https://kubernetes.default
-            - curl3: curl -k https://kubernetes
-    remote_forked_join:
-        requires: ['quick', 'sd@3450:quick']
-        steps:
-            - env: env
-    test_param:
-        requires: [~commit]
-        steps:
-            - token: echo $SD_TOKEN
-            - param_values1: meta get parameters
-            - param_values2: meta get parameters.region
-            - param_values3: meta get parameters.az
-            - meta: meta get -j json
-    test_tear_down:
-        requires: [~commit]
-        annotations:
-            screwdriver.cd/timeout: 1
-        steps:
-            - env: env
-            - new_env_var: |
-                export A=1
-                export B=2
-                export C=3
-                env
-            - timeout: |
-                sleep 70
-            - teardown-test: |
-                echo $A $B $C
-                env
-    prjob_test:
-        requires: [~pr:prjob]
-        steps:
-            - env: env
-    set-meta-job:
-        requires: [~pr, ~commit]
-        steps:
-            - set: |
-                meta set foo[2].bar[1] baz
-    get-meta-job:
-        steps:
-            - get: |
-                echo $(meta get foo)
-    sd-test:
-        requires: [~pr, ~commit]
-        steps:
-            - test: |
-                echo first
-                echo second
-                git diff 431d3e61...origin/master
-                echo third
-    test:
-        requires: [~pr, ~commit]
-        steps:
-            - echo: |
-                echo $'a\tb\nc'
-                echo $"a\tb\nc"
-            - test: env
-            #- set: meta set build_version_1 1234567
-            #- get: meta get build_version_1
-            #- sleep: sleep 60000
-            - postecho: |
-                cat $SD_SOURCE_DIR/ascii-art.txt
-                sleep 7
-                echo {0..2}{0..2} | tr ' ' '\n'
-                sleep 1
-                echo {3..4}{3..4} | tr ' ' '\n'
-                exit 1
-                echo {a..z}{a..z} | tr ' ' '\n'
-            - post: env
-    main:
-        requires: [~pr, ~commit]
-        steps:
-            #- set: meta set build_version_1 1234567
-            #- get: meta get build_version_1
-            #- sleep: sleep 60000
-            - postecho: |
-                echo {0..9}{0..9} | tr ' ' '\n'
-                sleep 3
-                cat $SD_SOURCE_DIR/ascii-art.txt
-                sleep 1
-                echo {a..z}{a..z} | tr ' ' '\n'
-                
-            #- publish: npx semantic-release
-            #- install: npm install screwdriver-template-main
-            #- tag: ./node_modules/.bin/template-tag --name tifftemplate --version 1.0.4 --tag meow
-    combo-triggered-job:
-        steps:
-            - echo: echo 'this job is executed by a tag/release push event.'
-        requires: [~release, ~tag]
+  test-xss:
+    steps:
+      - test: |
+          meta set build.warning.message 'this is a warning message <a href="/builds/913516" rel="noopener" onclick="alert(123);">913516</a>'
+  template:
+    template: screwdriver-cd-test/test-trusted-template@1.0.134
+  #     noop:
+  #         image: rwgrim/docker-noop
+  #         steps:
+  #             - ls: ls
+  abort:
+    image: node:12
+    steps:
+      - env: export FACTORY_BUILD_STATUS=success
+      - sleep: |
+          export ABORT_BUILD_STATUS=aborted
+          while true; do sleep 1; echo "sleep"; done
+      - teardown-first: |
+          export ABORT_BUILD_STATUS_TEARDOWN=aborted-teardown
+          sleep 60
+          export
+      - teardown-env: |
+          echo $FACTORY_BUILD_STATUS
+          echo $ABORT_BUILD_STATUS
+          echo $ABORT_BUILD_STATUS_TEARDOWN
+  #     dockerX:
+  #         template: sd/dind@latest
+  #         image: docker:dind
+  #         environment:
+  #             DOCKER_REPO: dekusdenial/test
+  #             DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
+  #         secrets:
+  #             - USER_NAME
+  #             - USER_PASSWORD
+  #         steps:
+  #             - postsetup: |
+  #                 DOCKER_REGISTRY_USER=$USER_NAME
+  #                 DOCKER_REGISTRY_TOKEN=$USER_PASSWORD
+  #                 echo "stable" > VERSION
+  #             - postverify: |
+  #                 docker run -it --rm --platform linux/arm64 --entrypoint sh dekusdenial/test -c 'uname -m'
+  #                 docker run -it --rm --platform linux/amd64 --entrypoint sh dekusdenial/test -c 'uname -m'
+  quick:
+    steps:
+      - sd: meta get sd
+      - commit: meta get commit
+      - build: meta get build
+      - env: env
+      - curl: curl -m 10 169.254.169.254
+      - curl1: curl -k https://kubernetes.default.svc
+      - curl2: curl -k https://kubernetes.default
+      - curl3: curl -k https://kubernetes
+  remote_forked_join:
+    requires: ["quick", "sd@3450:quick"]
+    steps:
+      - env: env
+  test_param:
+    requires: [~commit]
+    steps:
+      - token: echo $SD_TOKEN
+      - param_values1: meta get parameters
+      - param_values2: meta get parameters.region
+      - param_values3: meta get parameters.az
+      - meta: meta get -j json
+  test_tear_down:
+    requires: [~commit]
+    annotations:
+      screwdriver.cd/timeout: 1
+    steps:
+      - env: env
+      - new_env_var: |
+          export A=1
+          export B=2
+          export C=3
+          env
+      - timeout: |
+          sleep 70
+      - teardown-test: |
+          echo $A $B $C
+          env
+  prjob_test:
+    requires: [~pr:prjob]
+    steps:
+      - env: env
+  set-meta-job:
+    requires: [~pr, ~commit]
+    steps:
+      - set: |
+          meta set foo[2].bar[1] baz
+  get-meta-job:
+    steps:
+      - get: |
+          echo $(meta get foo)
+  sd-test:
+    requires: [~pr, ~commit]
+    steps:
+      - test: |
+          echo first
+          echo second
+          git diff 431d3e61...origin/master
+          echo third
+  test:
+    requires: [~pr, ~commit]
+    steps:
+      - echo: |
+          echo $'a\tb\nc'
+          echo $"a\tb\nc"
+      - test: env
+      #- set: meta set build_version_1 1234567
+      #- get: meta get build_version_1
+      #- sleep: sleep 60000
+      - postecho: |
+          cat $SD_SOURCE_DIR/ascii-art.txt
+          sleep 7
+          echo {0..2}{0..2} | tr ' ' '\n'
+          sleep 1
+          echo {3..4}{3..4} | tr ' ' '\n'
+          exit 1
+          echo {a..z}{a..z} | tr ' ' '\n'
+      - post: env
+  main:
+    requires: [~pr, ~commit]
+    steps:
+      #- set: meta set build_version_1 1234567
+      #- get: meta get build_version_1
+      #- sleep: sleep 60000
+      - postecho: |
+          echo {0..9}{0..9} | tr ' ' '\n'
+          sleep 3
+          cat $SD_SOURCE_DIR/ascii-art.txt
+          sleep 1
+          echo {a..z}{a..z} | tr ' ' '\n'
+
+      #- publish: npx semantic-release
+      #- install: npm install screwdriver-template-main
+      #- tag: ./node_modules/.bin/template-tag --name tifftemplate --version 1.0.4 --tag meow
+  combo-triggered-job:
+    steps:
+      - echo: echo 'this job is executed by a tag/release push event.'
+    requires: [~release, ~tag]
