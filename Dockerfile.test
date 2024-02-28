@@ -1,0 +1,15 @@
+FROM alpine:3.12 AS base
+
+ARG TARGETOS TARGETARCH
+RUN echo "Building for ${TARGETOS}_${TARGETARCH}"
+
+WORKDIR /opt/sd
+
+FROM base AS base-amd64
+RUN echo "x86" > /tmp/a.txt
+
+FROM base AS base-arm64
+RUN echo "arm" > /tmp/b.txt
+
+FROM base-${TARGETARCH} AS final
+RUN echo $(ls -l /tmp/)
