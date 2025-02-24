@@ -1,0 +1,4 @@
+version: 1
+push:
+- screwdriver:999
+- screwdriver:999pr
